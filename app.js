@@ -1,13 +1,17 @@
 const express = require('express');
+const { client } = require('./db');
 const router = express.Router();
 
+
+const collection = client.db('data-of-college').collection('data')
 
 router.get('/', (req,res)=>{
     res.send('Hello from the router!');
 })
 
-router.get('/colleges', (req,res)=>{
-    res.send('List of colleges will be here.');
+router.get('/colleges', async (req,res)=>{
+    const colleges = await collection.find({}).toArray();
+    res.send(colleges);
 })
 
 router.get('/colleges/:id', (req,res)=>{
